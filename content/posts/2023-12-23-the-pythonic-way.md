@@ -182,7 +182,7 @@ In this case, the dictionary being added has keys in the format drug_{d} and val
 
 This is a common pattern in Django when you need to add fields to a form dynamically based on some variable data. In this case, the form fields are being created based on the drugs iterable.
 
-*And it is important to highlight again: the __init__ class has to be overrided with super()!*
+*And it is important to highlight again: the __init__ class has to be overriden with super()!* Why? Hum... that is a topic for another post.
 
 ## Conclusion
 
