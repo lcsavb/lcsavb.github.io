@@ -11,11 +11,25 @@ author: Lucas Barros
 
 Hello, everyone! Today, I want to talk about a technical aspect of my project and the evolution of my code.
 
-The goal: to create a django form responsible for making a new prescription.
+The goal: to create a Django form responsible for making a new prescription.
 
 And the problem is fairly simple: each prescription may have up to 4 drugs and each drug may have a different quantity and posology for each of 6 months.
 
-## The horrendous approach
+So, the first step is to create a class which inherits from forms.Form:
+
+```python
+class CreatePrescription(forms.Form):
+    form_field_1 = forms.CharField(required=True, label='Diagnóstico',widget=forms.TextInput)
+    .
+    .
+    .
+    .
+    form_field_n = forms.CharField()
+
+
+```
+
+## The lazy approach
 
 Initially, I used a manual approach, defining each field explicitly. This method was amateurish and did not adhere to the "DRY" (Don't Repeat Yourself) principle.
 
@@ -73,11 +87,25 @@ And even a single broken window is more than enough to spread disarray throughou
     qtd_med4_mes6 = forms.CharField(required=False, label="Qtde. 6 mês")
 ```
 
+## super()
 
-- **Readability**: Low. The code is lengthy and repetitive.
-- **Maintainability**: Difficult. Manual updates needed for changes.
-- **Scalability**: Low. Impractical for many fields.
-- **Efficiency**: Moderate. Functional but not optimized.
+The problem takes form: it is need to add the fields *dinamically*, the class __init__ method has to be overrided with super():
+
+```python
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(CreatePrescription, self).__init__(*args, **kwargs)
+        # new approaches here
+
+    # the rest of the form
+    form_field_1 = forms.CharField(required=True, label='Diagnóstico',widget=forms.TextInput)
+    .
+    .
+    form_field_n = forms.CharField()
+
+```
+
+The following approaches are then included in this new __init__ method.
 
 ## Approach 2: Loop-Based Creation
 
@@ -100,6 +128,8 @@ To improve, I moved to a loop-based approach, which made the code more dynamic a
                 self.fields[posology_field_name] = forms.CharField(label=posology_field_label)
                 self.fields[qty_field_name] = forms.CharField(label=qty_field_label)
 ```
+
+Certainly better, but not good enough.
 
 ## Approach 3: The zen of Python
 
@@ -130,7 +160,7 @@ To improve, I moved to a loop-based approach, which made the code more dynamic a
         )
 ```
 
-The selected code is using the update method of the form's fields dictionary to add new fields dynamically. This is done inside a dictionary comprehension, which is a concise way to create dictionaries.
+The definitive code is using the update method of the form's fields dictionary to add new fields dynamically. This is done inside a dictionary comprehension, which is a concise way to create dictionaries.
 
 The update method takes a dictionary as an argument and adds its key-value pairs to the existing dictionary. If a key in the given dictionary already exists in the original dictionary, its value is updated.
 
