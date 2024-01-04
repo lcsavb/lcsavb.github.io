@@ -168,6 +168,8 @@ In this case, the dictionary being added has keys in the format drug_{d} and val
 
 This is a common pattern in Django when you need to add fields to a form dynamically based on some variable data. In this case, the form fields are being created based on the drugs iterable.
 
+*And it is important to highlight again: the __init__ class has to be overrided with super()!*
+
 ## Conclusion
 
 Comparing these three approaches, the list comprehension with `update` method stands out as the best. It’s not only more efficient and easier to maintain, but also scales well with future changes and additions. This method is ideal for regular, dynamic data structures like the example of form fields for medicines and posology.
