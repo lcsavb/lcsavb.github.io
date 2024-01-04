@@ -19,7 +19,10 @@ And the problem is fairly simple: each prescription may have up to 4 drugs and e
 
 Initially, I used a manual approach, defining each field explicitly. This method was amateurish and did not adhere to the "DRY" (Don't Repeat Yourself) principle.
 
-\```python
+In portuguese that is what is called "sausage code". Does it work? Certainly! But adds a big "broken window" in the project.
+And even a single broken window is more than enough to spread disarray throughout.
+
+```python
     med1_posologia_mes1 = forms.CharField(required=True, label='Posologia')
     med1_posologia_mes2 = forms.CharField(required=True, label='Posologia')
     med1_posologia_mes3 = forms.CharField(required=True, label='Posologia')
@@ -68,7 +71,7 @@ Initially, I used a manual approach, defining each field explicitly. This method
     qtd_med4_mes4 = forms.CharField(required=False, label="Qtde. 4 mês")
     qtd_med4_mes5 = forms.CharField(required=False, label="Qtde. 5 mês")
     qtd_med4_mes6 = forms.CharField(required=False, label="Qtde. 6 mês")
-\```
+```
 
 
 - **Readability**: Low. The code is lengthy and repetitive.
@@ -76,14 +79,11 @@ Initially, I used a manual approach, defining each field explicitly. This method
 - **Scalability**: Low. Impractical for many fields.
 - **Efficiency**: Moderate. Functional but not optimized.
 
-In portuguese that is what is called "sausage code". Does it work? Certainly! But adds a big "broken window" in the project.
-And even a single broken window is more than enough to spread disarray throught.
-
 ## Approach 2: Loop-Based Creation
 
 To improve, I moved to a loop-based approach, which made the code more dynamic and reduced repetition.
 
-\```python
+```python
         drugs = ['01', '02', '03', '04']
         months = ['01', '02', '03', '04', '05', '06']
 
@@ -99,11 +99,11 @@ To improve, I moved to a loop-based approach, which made the code more dynamic a
                 qty_field_label = f'Qtde. - Medicamento {d} - Mês {m}'
                 self.fields[posology_field_name] = forms.CharField(label=posology_field_label)
                 self.fields[qty_field_name] = forms.CharField(label=qty_field_label)
-\```
+```
 
 ## Approach 3: The zen of Python
 
-\```python
+```python
 
         drugs = ['01', '02', '03', '04']
         months = ['01', '02', '03', '04', '05', '06']
@@ -128,7 +128,7 @@ To improve, I moved to a loop-based approach, which made the code more dynamic a
                 for m in months
             }
         )
-\```
+```
 
 The selected code is using the update method of the form's fields dictionary to add new fields dynamically. This is done inside a dictionary comprehension, which is a concise way to create dictionaries.
 
