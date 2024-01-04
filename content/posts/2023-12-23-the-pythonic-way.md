@@ -90,7 +90,7 @@ class CreatePrescription(forms.Form):
 
 ## super()
 
-The problem takes form: it is need to add the fields *dinamically*, the class __init__ method has to be overrided with super():
+The problem takes form: it is needed to add the fields *dinamically*, the class __init__ method has to be overrided with super():
 
 ```python
 class CreatePrescription(forms.Form):
