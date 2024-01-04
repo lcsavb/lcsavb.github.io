@@ -90,7 +90,7 @@ class CreatePrescription(forms.Form):
 
 ## super()
 
-The problem takes form: it is needed to add the fields *dinamically*, the class __init__ method has to be overrided with super():
+The problem takes form: it is needed to add the fields *dinamically*, the class __init__ method has to be overriden with super():
 
 ```python
 class CreatePrescription(forms.Form):
@@ -147,13 +147,17 @@ class CreatePrescription(forms.Form):
         self.user = kwargs.pop('user', None)
         super(CreatePrescription, self).__init__(*args, **kwargs)
 
+        # Dynamic fields - Each of the 4 possible drugs have 6 months of posology and qty.
+
         drugs = ['01', '02', '03', '04']
         months = ['01', '02', '03', '04', '05', '06']
 
-        for d in drugs:
-            drug_field_name = f'drug_{d}'
-            drug_field_label = f'Medicamento {d}'
-            self.fields[drug_field_name] = forms.CharField(label=drug_field_label)
+        self.fields.update(
+            {
+                f'drug_{d}': forms.CharField(label=f'Medicamento {d}')
+                for d in drugs
+            }
+        )
 
         self.fields.update(
             {
