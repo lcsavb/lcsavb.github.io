@@ -95,7 +95,6 @@ The problem takes form: it is needed to add the fields *dinamically*, the class 
 ```python
 class CreatePrescription(forms.Form):
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
         super(CreatePrescription, self).__init__(*args, **kwargs)
         # new approaches here
 
@@ -144,7 +143,6 @@ Certainly better, but not good enough.
 
 class CreatePrescription(forms.Form):
     def __init__(self, *args, **kwargs):
-        self.user = kwargs.pop('user', None)
         super(CreatePrescription, self).__init__(*args, **kwargs)
 
         # Dynamic fields - Each of the 4 possible drugs have 6 months of posology and qty.
