@@ -37,6 +37,7 @@ In portuguese that is what is called "sausage code". Does it work? Certainly! Bu
 And even a single broken window is more than enough to spread disarray throughout.
 
 ```python
+class CreatePrescription(forms.Form):
     med1_posologia_mes1 = forms.CharField(required=True, label='Posologia')
     med1_posologia_mes2 = forms.CharField(required=True, label='Posologia')
     med1_posologia_mes3 = forms.CharField(required=True, label='Posologia')
@@ -92,6 +93,7 @@ And even a single broken window is more than enough to spread disarray throughou
 The problem takes form: it is need to add the fields *dinamically*, the class __init__ method has to be overrided with super():
 
 ```python
+class CreatePrescription(forms.Form):
     def __init__(self, *args, **kwargs):
         self.user = kwargs.pop('user', None)
         super(CreatePrescription, self).__init__(*args, **kwargs)
@@ -112,6 +114,11 @@ The following approaches are then included in this new __init__ method.
 To improve, I moved to a loop-based approach, which made the code more dynamic and reduced repetition.
 
 ```python
+class CreatePrescription(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(CreatePrescription, self).__init__(*args, **kwargs)
+
         drugs = ['01', '02', '03', '04']
         months = ['01', '02', '03', '04', '05', '06']
 
@@ -119,7 +126,7 @@ To improve, I moved to a loop-based approach, which made the code more dynamic a
             drug_field_name = f'drug_{d}'
             drug_field_label = f'Medicamento {d}'
             self.fields[drug_field_name] = forms.CharField(label=drug_field_label)
-            
+
             for m in months:
                 posology_field_name = f'posology_drug_{d}_month_{m}'
                 posology_field_label = f'Posologia - Medicamento {d} - Mês {m}'
@@ -134,6 +141,11 @@ Certainly better, but not good enough.
 ## Approach 3: The zen of Python
 
 ```python
+
+class CreatePrescription(forms.Form):
+    def __init__(self, *args, **kwargs):
+        self.user = kwargs.pop('user', None)
+        super(CreatePrescription, self).__init__(*args, **kwargs)
 
         drugs = ['01', '02', '03', '04']
         months = ['01', '02', '03', '04', '05', '06']
