@@ -8,7 +8,7 @@ So, I had two choices: either add the data and link manually or...
 
 ## Automating to automate
 
-All the code I used to accomplish this is located in the repository: [https://github.com/lcsavb/chupador](https://github.com/lcsavb/chupador).
+All the code I used to accomplish this is located in the repository: [Data Retrieval](https://github.com/lcsavb/autocusto-data-retrieval).
 
 It was five years ago and I have learned two important lessons: to never again use bad words* in my code as I have
 done and, MOST IMPORTANTLY, be organized and write documentation. It is a mess and I don't remember quite well all
@@ -157,7 +157,7 @@ Luckily for me, inside every link was the ICDs associated with the respective dr
 
 At that point I know which protocol and which is vinculated with each ICD. But not which drugs are vinculated with each protocol.
 
-But the drugs have diferent presentations and dosages. After getting the raw data ([https://github.com/lcsavb/chupador](https://github.com/lcsavb/chupador)/tree/master/medicamentos/csv_raw) I crossed it with a drug API to normalize it.
+But the drugs have diferent presentations and dosages. After getting the raw data ([https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw](https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw)/tree/master/medicamentos/csv_raw) I crossed it with a drug API to normalize it.
 
 ## Vinculating drugs with the protocols
 
