@@ -1,3 +1,15 @@
+---
+layout: post
+title:  Automating to automate
+date: 2024-01-09
+#cover-img: /assets/img/path.jpg
+#thumbnail-img: /assets/img/thumb.png
+#share-img: /assets/img/path.jpg
+#tags: [python, programming, web development]
+author: Lucas Barros
+---
+
+
 # How did I create my data?
 
 The SUS (Brazilian Unified Health System) provides a limited number of medications though it's "High Cost Pharmacies" program. Back in 2019 when I started this project, there wasn't a public database or API to the data - and to my knowledge there is not one until this very day.

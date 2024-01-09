@@ -1,7 +1,7 @@
 ---
 layout: post
-title:  The Pythonic Way
-date: 2024-01-04
+title:  Refactoring code
+date: 2024-01-02
 #cover-img: /assets/img/path.jpg
 #thumbnail-img: /assets/img/thumb.png
 #share-img: /assets/img/path.jpg
