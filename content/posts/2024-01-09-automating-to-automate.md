@@ -41,12 +41,6 @@ the same disease. For example, for Epilepsy Protocol one can choose G40.0 or G40
 For each protocol there are an unique set of conditional documents and a set of authorized drugs. That is it.
 
 I was able to vinculate and organize all the data, with the exception of the conditional documents.
- ! [rejected]        HEAD -> main (non-fast-forward)
-error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
-hint: Updates were rejected because a pushed branch tip is behind its remote
-hint: counterpart. If you want to integrate the remote changes, use 'git pull'
-hint: before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 ### Getting the protocols
 
@@ -72,29 +66,21 @@ to separete each one because every single one starts with an Uppercase letter fo
 
 ### Diving into PDFs
 
+Next I used an PDF crawler to search through the PDFs.
+
+That way I was able to vinculate the Protocol with the ICDs. As you see it, this is a raw file and I
+was able to get the ICD codes because every groups of ICDs in these files was inside parenthesis. I accomplished
+to separete each one because every single one starts with an Uppercase letter followed by 2 numbers.
+But as you see it, I had to fix some things: I have used an open ICD API to normalize the values and corrected
+manually the few wrong which where left.
+
 ```python
+
 import glob
 import os
 from tika import parser
 import substring
 import json
-
-def verificar_int(string):
-    try:
-        int(string)
-        return True
-    except ValueError:
-        return False
-
-def busca_cid(c):
-    lista_cids = []
-    for i in range(len(c)):
-        if c[i].upper() and c[i].isalpha():
-            try:
-                if verificar_int(c[i + 1]) and verificar_int(c[i + 2]):
-                    possivel_cid = (c[i:i+5]).rstrip()
-                    lista_cids.append(possivel_cid)
-    return lista_cids
 
 arquivos = glob.iglob('/home/lucas/dev/chupador/medicamentos/vinculador/protocolos/*.*')
 
@@ -106,24 +92,19 @@ for a in arquivos:
         nome_protocolo = substring.substringByChar(str(a), '_', '.')
         nome_protocolo = nome_protocolo[1:-1]
         nome_arquivo = os.path.basename(a)
-    except: ! [rejected]        HEAD -> main (non-fast-forward)
-error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
-hint: Updates were rejected because a pushed branch tip is behind its remote
-hint: counterpart. If you want to integrate the remote changes, use 'git pull'
-hint: before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+    except:
+        nome_protocolo = 'nao identificado'
+        nome_arquivo = os.path.basename(a)
+
+    protocolos_cids.update({nome_protocolo: {'cids': lista_cids, 'arquivo': nome_arquivo}})
+
 protocolos_json = json.dumps(protocolos_cids, indent=4, sort_keys=True)
 
 with open('protocolos.json', 'w') as novo_arquivo:
     novo_arquivo.write(protocolos_json)
 ```
 
-That way I was able to vinculate the Protocol with the ICDs. As you see it, this is a raw file and I
-was able to get the ICD codes because every groups of ICDs in these files was inside parenthesis. **I accomplished
-to separete each one because every single one starts with an Uppercase letter followed by 2 numbers.**
-But as you see it, I had to fix some things: I have used an open ICD API to normalize the values and corrected
-manually the few wrong which where left.https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw.
-
+The JSON file generated was:
 
 ```json
     "doencadecrohnv9": {
@@ -138,12 +119,9 @@ manually the few wrong which where left.https://github.com/lcsavb/autocusto-data
         "arquivo": "21_doencadegaucherv11.pdf",
         "cids": [
             "E75.2",
-            "v12.p", ! [rejected]        HEAD -> main (non-fast-forward)
-error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
-hint: Updates were rejected because a pushed branch tip is behind its remote
-hint: counterpart. If you want to integrate the remote changes, use 'git pull'
-hint: before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+            "v12.p",'''python
+```
+
 ## How about the drugs?
 
 Next, I had to know which drug is vinculated with each protocol. I could have done it with the PDFs, yet
@@ -152,14 +130,18 @@ was in the website's menus of the Health Secretary, so using a web crawler again
 
 ```
 ['Clique ', <a href="http://saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-a'''ssistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/medicamentos-para-tratamento-de-glaucoma">aqui</a>, ' para orientações']
-['\xa0'] 
+['\xa0']
+['Secretaria de Estado da Saúde']
+['Av. Dr. Enéas Carvalho de Aguiar,188 - São Paulo - Fone (11) 3066 8000 - CEP 05403-000']
+[]
+['No Estado de São Paulo, o\xa0acesso aos medicamentos para tratamento de glaucoma se dá em:']
 ['\xa0']
 ['Pacientes atendidos em um dos Serviços de Referência em Oftalmologia, habilitados pelo SUS, abaixo relacionados:\xa0clique ', <a href="http://saude.sp.gov.br/resources/ses/perfil/cidadao/acesso-rapido/medicamentos/relacao-estadual-de-medicamentos-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-protocolo-clinico-e-diretriz-terapeutica/39b_glaucoma_v3_-_servicos_de_referencia.pdf">aqui</a>, '\xa0para orientações.']
 ['Pacientes atendidos por outros serviços de saúde:\xa0clique ', <a href="http://saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/medicamentos-para-tratamento-de-glaucoma">aqui</a>, '\xa0para orientações.']
 ['\xa0']
 ```
 
-After that I used a python script to retrieve only the links. 
+After that I used a python script to retrieve only the links.
 
 ```html
 
@@ -171,7 +153,11 @@ After that I used a python script to retrieve only the links.
     ],
 ```
 
-Luckily for me, inside every link was the ICDs associated with the respective drug. I extracted the ICDs using the method already mentioned.
+Luckily for me, inside every link was the ICDs associated with the respective drug. I extracted the ICDs using the same method already mentioned.
+
+At that point I know which protocol and drug is vinculated with each ICD. But not which drugs are vinculated with each protocol.
+
+Moreover the drugs have diferent presentations and dosages. After getting the [raw data](https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw) I crossed it with a drug API to normalize it.
 
 ## Vinculating drugs with the protocols
 
