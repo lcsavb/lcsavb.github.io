@@ -16,6 +16,8 @@ The SUS (Brazilian Unified Health System) provides a limited number of medicatio
 
 The data was all spread out in the site of the Health Ministry and in PDFs.
 
+PDFs examples: [here](https://github.com/lcsavb/autocusto-data-retrieval/blob/master/medicamentos/arquivos_base/med_pcdt.pdf) and [here](https://github.com/lcsavb/autocusto/tree/master/static/protocolos). ["Click here"](https://web.archive.org/web/19961017235908/https://www.yahoo.com/) is so 90's, I am guilty.
+
 So, I had two choices: either add the data and link manually or...
 
 ## Automating to automate
@@ -39,7 +41,12 @@ the same disease. For example, for Epilepsy Protocol one can choose G40.0 or G40
 For each protocol there are an unique set of conditional documents and a set of authorized drugs. That is it.
 
 I was able to vinculate and organize all the data, with the exception of the conditional documents.
-
+ ! [rejected]        HEAD -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. If you want to integrate the remote changes, use 'git pull'
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 
 ### Getting the protocols
 
@@ -64,7 +71,12 @@ to separete each one because every single one starts with an Uppercase letter fo
 ```
 
 ### Diving into PDFs
-
+ ! [rejected]        HEAD -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. If you want to integrate the remote changes, use 'git pull'
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 Next I used an PDF crawler to search through the PDFs:
 
 ```python
@@ -88,12 +100,12 @@ def busca_cid(c):
             try:
                 if verificar_int(c[i + 1]) and verificar_int(c[i + 2]):
                     possivel_cid = (c[i:i+5]).rstrip()
-                    lista_cids.append(possivel_cid)
-            except:
-                print('não foi possível verificar se é inteiro por algum motivo')
-            else:
-                continue
-    
+                    lista_cids.append(possivel_cid) ! [rejected]        HEAD -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. If you want to integrate the remote changes, use 'git pull'
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
     return lista_cids
 
 arquivos = glob.iglob('/home/lucas/dev/chupador/medicamentos/vinculador/protocolos/*.*')
@@ -106,12 +118,12 @@ for a in arquivos:
         nome_protocolo = substring.substringByChar(str(a), '_', '.')
         nome_protocolo = nome_protocolo[1:-1]
         nome_arquivo = os.path.basename(a)
-    except:
-        nome_protocolo = 'nao identificado'
-        nome_arquivo = os.path.basename(a)
-
-    protocolos_cids.update({nome_protocolo: {'cids': lista_cids, 'arquivo': nome_arquivo}})
-
+    except: ! [rejected]        HEAD -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. If you want to integrate the remote changes, use 'git pull'
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 protocolos_json = json.dumps(protocolos_cids, indent=4, sort_keys=True)
 
 with open('protocolos.json', 'w') as novo_arquivo:
@@ -139,9 +151,12 @@ manually the few wrong which where left.https://github.com/lcsavb/autocusto-data
         "arquivo": "21_doencadegaucherv11.pdf",
         "cids": [
             "E75.2",
-            "v12.p",
-```
-
+            "v12.p", ! [rejected]        HEAD -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. If you want to integrate the remote changes, use 'git pull'
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.
 ## How about the drugs?
 
 Next, I had to know which drug is vinculated with each protocol. I could have done it with the PDFs, yet
@@ -150,18 +165,19 @@ was in the website's menus of the Health Secretary, so using a web crawler again
 
 ```
 ['Clique ', <a href="http://saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-a'''ssistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/medicamentos-para-tratamento-de-glaucoma">aqui</a>, ' para orientações']
-['\xa0']
-['Secretaria de Estado da Saúde']
-['Av. Dr. Enéas Carvalho de Aguiar,188 - São Paulo - Fone (11) 3066 8000 - CEP 05403-000']
-[]
-['No Estado de São Paulo, o\xa0acesso aos medicamentos para tratamento de glaucoma se dá em:']
+['\xa0'] ! [rejected]        HEAD -> main (non-fast-forward)
+error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
+hint: Updates were rejected because a pushed branch tip is behind its remote
+hint: counterpart. If you want to integrate the remote changes, use 'git pull'
+hint: before pushing again.
+hint: See the 'Note about fast-forwards' in 'git push --help' for details.laucoma se dá em:']
 ['\xa0']
 ['Pacientes atendidos em um dos Serviços de Referência em Oftalmologia, habilitados pelo SUS, abaixo relacionados:\xa0clique ', <a href="http://saude.sp.gov.br/resources/ses/perfil/cidadao/acesso-rapido/medicamentos/relacao-estadual-de-medicamentos-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-protocolo-clinico-e-diretriz-terapeutica/39b_glaucoma_v3_-_servicos_de_referencia.pdf">aqui</a>, '\xa0para orientações.']
 ['Pacientes atendidos por outros serviços de saúde:\xa0clique ', <a href="http://saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/medicamentos-para-tratamento-de-glaucoma">aqui</a>, '\xa0para orientações.']
 ['\xa0']
 ```
 
-After that I used a python script to retrieve only the links.
+After that I used a python script to retrieve only the links. 
 
 ```html
 
@@ -174,6 +190,7 @@ After that I used a python script to retrieve only the links.
 ```
 
 Luckily for me, inside every link was the ICDs associated with the respective drug. I extracted the ICDs using the same method already mentioned.https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw
+
 ## Vinculating drugs with the protocols
 
 So, cross-referencing the cids I found in the website with the cids in the pdfs I was able to finally associate all the drugs with the protocols with minimal error.
