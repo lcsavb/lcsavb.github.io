@@ -10,7 +10,7 @@ author: Lucas Barros
 ---
 
 
-# How did I create my data?
+# How did I retrieved and organized the data?
 
 The SUS (Brazilian Unified Health System) provides a limited number of medications though it's "High Cost Pharmacies" program. Back in 2019 when I started this project, there wasn't a public database or API to the data - and to my knowledge there is not one until this very day.
 
@@ -54,12 +54,8 @@ import substring
 import os
 
 url_indice = 'http://www.saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/relacao-estadual-de-medicamentos-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-protocolo-clinico-e-diretriz-terapeutica'
-indice = urllib.request.urlopen(url_indice)
-
-sopa = BeautifulSoup(indice, 'html.parser')
-
-for link in sopa.find_all('a'):
-    endereco = str(link.get('href'))
+indice = urllib.request.urlopen(url_indice)I accomplished
+to separete each one because every single one starts with an Uppercase letter followed by 2 numbers.
     if '/resources/' in endereco:
         if endereco[0] != 'h':
             endereco = 'http://saude.sp.gov.br' + endereco
@@ -71,7 +67,7 @@ for link in sopa.find_all('a'):
 
 Next I used an PDF crawler to search through the PDFs:
 
-´´´python
+```python
 import glob
 import os
 from tika import parser
@@ -120,7 +116,7 @@ protocolos_json = json.dumps(protocolos_cids, indent=4, sort_keys=True)
 
 with open('protocolos.json', 'w') as novo_arquivo:
     novo_arquivo.write(protocolos_json)
-´´´
+```
 
 
 That way I was able to vinculate the Protocol with the ICDs. As you see it, this is a raw file and I
@@ -130,7 +126,7 @@ But as you see it, I had to fix some things: I have used an open ICD API to norm
 manually the few wrong which where left.https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw.
 
 
-´´´json 
+```json
     "doencadecrohnv9": {
         "arquivo": "20_doencadecrohnv9.pdf",
         "cids": [
