@@ -14,7 +14,7 @@ author: Lucas Barros
 
 The SUS (Brazilian Unified Health System) provides a limited number of medications though it's "High Cost Pharmacies" program. Back in 2019 when I started this project, there wasn't a public database or API to the data - and to my knowledge there is not one until this very day.
 
-The data was all spread out in the site of the Health Ministry and in guidelines in PDFs.
+The data was all spread out in the site of the Health Ministry and in PDFs.
 
 So, I had two choices: either add the data and link manually or...
 
@@ -23,8 +23,7 @@ So, I had two choices: either add the data and link manually or...
 All the code I used to accomplish this is located in the repository: [Data Retrieval](https://github.com/lcsavb/autocusto-data-retrieval).
 
 It was five years ago and I have learned two important lessons: to never again use bad words* in my code as I have
-done and, MOST IMPORTANTLY, be organized and write documentation. It is a mess and I don't remember quite well all
-the steps I followed, but to the best of my ability I'll try to make a summary.
+done and, MOST IMPORTANTLY, **be organized and write documentation**. The repository is a mess and I don't remember quite well all the steps I followed, but to the best of my ability I'll try to make a summary.
 
 *but you don't need to translate them.... or eat peanut butter either.
 
@@ -33,12 +32,13 @@ the steps I followed, but to the best of my ability I'll try to make a summary.
 The data structure is pretty straightforward.
 
 Protocols for specific diseases, yet each protocol has multiples ICDs after all there are different numbers for
-the same disease. For example, the for the Epilepsy Protocol one can choose G40.0 or G40.1. The total number of protocols is 92 which are vinculated to about 500 ICD codes.
+the same disease. For example, for Epilepsy Protocol one can choose G40.0 or G40.1. 
+
+**The total number of protocols is 92 which are vinculated to about 500 ICD codes.**
 
 For each protocol there are an unique set of conditional documents and a set of authorized drugs. That is it.
 
 I was able to vinculate and organize all the data, with the exception of the conditional documents.
-
 
 
 ### Getting the protocols
@@ -69,18 +69,36 @@ for link in sopa.find_all('a'):
 
 ### Diving into PDFs
 
-Next I used an PDF crawler to search through the PDFs and generate the following JSON file.
-That way I was able to vinculate the Protocol with the ICDs. As you see it, this is a raw file and I
-was able to get the ICD codes because every groups of ICDs in these files was inside parenthesis. I accomplished
-to separete each one because every single one starts with an Uppercase letter followed by 2 numbers.
-But as you see it, I had to fix some things: I have used an open ICD API to normalize the values and corrected
-manually the few wrong which where left.https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw
+Next I used an PDF crawler to search through the PDFs:
 
+´´´python
 import glob
 import os
 from tika import parser
 import substring
 import json
+
+def verificar_int(string):
+    try:
+        int(string)
+        return True
+    except ValueError:
+        return False
+
+def busca_cid(c):
+    lista_cids = []
+    for i in range(len(c)):
+        if c[i].upper() and c[i].isalpha():
+            try:
+                if verificar_int(c[i + 1]) and verificar_int(c[i + 2]):
+                    possivel_cid = (c[i:i+5]).rstrip()
+                    lista_cids.append(possivel_cid)
+            except:
+                print('não foi possível verificar se é inteiro por algum motivo')
+            else:
+                continue
+    
+    return lista_cids
 
 arquivos = glob.iglob('/home/lucas/dev/chupador/medicamentos/vinculador/protocolos/*.*')
 
@@ -91,7 +109,7 @@ for a in arquivos:
     try:
         nome_protocolo = substring.substringByChar(str(a), '_', '.')
         nome_protocolo = nome_protocolo[1:-1]
-        nome_arquivo = os.path.basename(a)https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw
+        nome_arquivo = os.path.basename(a)
     except:
         nome_protocolo = 'nao identificado'
         nome_arquivo = os.path.basename(a)
@@ -102,19 +120,17 @@ protocolos_json = json.dumps(protocolos_cids, indent=4, sort_keys=True)
 
 with open('protocolos.json', 'w') as novo_arquivo:
     novo_arquivo.write(protocolos_json)
-            "G30.0",
-            "G30.1",
-            "G30.8",
-            "F00.0",
-            "F00.1",
-            "F00.2",
-            "v11.p",
-            "v10_2",
-            "v10_2",
-            "B12;",
-            "B12;"
-        ]
-    },
+´´´
+
+
+That way I was able to vinculate the Protocol with the ICDs. As you see it, this is a raw file and I
+was able to get the ICD codes because every groups of ICDs in these files was inside parenthesis. **I accomplished
+to separete each one because every single one starts with an Uppercase letter followed by 2 numbers.**
+But as you see it, I had to fix some things: I have used an open ICD API to normalize the values and corrected
+manually the few wrong which where left.https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw.
+
+
+´´´json 
     "doencadecrohnv9": {
         "arquivo": "20_doencadecrohnv9.pdf",
         "cids": [
@@ -127,7 +143,7 @@ with open('protocolos.json', 'w') as novo_arquivo:
         "arquivo": "21_doencadegaucherv11.pdf",
         "cids": [
             "E75.2",
-            "v12.p",'''python
+            "v12.p",
 ```
 
 ## How about the drugs?
