@@ -71,13 +71,6 @@ to separete each one because every single one starts with an Uppercase letter fo
 ```
 
 ### Diving into PDFs
- ! [rejected]        HEAD -> main (non-fast-forward)
-error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
-hint: Updates were rejected because a pushed branch tip is behind its remote
-hint: counterpart. If you want to integrate the remote changes, use 'git pull'
-hint: before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
-Next I used an PDF crawler to search through the PDFs:
 
 ```python
 import glob
@@ -100,12 +93,7 @@ def busca_cid(c):
             try:
                 if verificar_int(c[i + 1]) and verificar_int(c[i + 2]):
                     possivel_cid = (c[i:i+5]).rstrip()
-                    lista_cids.append(possivel_cid) ! [rejected]        HEAD -> main (non-fast-forward)
-error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
-hint: Updates were rejected because a pushed branch tip is behind its remote
-hint: counterpart. If you want to integrate the remote changes, use 'git pull'
-hint: before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.
+                    lista_cids.append(possivel_cid)
     return lista_cids
 
 arquivos = glob.iglob('/home/lucas/dev/chupador/medicamentos/vinculador/protocolos/*.*')
@@ -129,7 +117,6 @@ protocolos_json = json.dumps(protocolos_cids, indent=4, sort_keys=True)
 with open('protocolos.json', 'w') as novo_arquivo:
     novo_arquivo.write(protocolos_json)
 ```
-
 
 That way I was able to vinculate the Protocol with the ICDs. As you see it, this is a raw file and I
 was able to get the ICD codes because every groups of ICDs in these files was inside parenthesis. **I accomplished
@@ -165,12 +152,7 @@ was in the website's menus of the Health Secretary, so using a web crawler again
 
 ```
 ['Clique ', <a href="http://saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-a'''ssistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/medicamentos-para-tratamento-de-glaucoma">aqui</a>, ' para orientações']
-['\xa0'] ! [rejected]        HEAD -> main (non-fast-forward)
-error: failed to push some refs to 'github.com:lcsavb/lcsavb.github.io.git'
-hint: Updates were rejected because a pushed branch tip is behind its remote
-hint: counterpart. If you want to integrate the remote changes, use 'git pull'
-hint: before pushing again.
-hint: See the 'Note about fast-forwards' in 'git push --help' for details.laucoma se dá em:']
+['\xa0'] 
 ['\xa0']
 ['Pacientes atendidos em um dos Serviços de Referência em Oftalmologia, habilitados pelo SUS, abaixo relacionados:\xa0clique ', <a href="http://saude.sp.gov.br/resources/ses/perfil/cidadao/acesso-rapido/medicamentos/relacao-estadual-de-medicamentos-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-protocolo-clinico-e-diretriz-terapeutica/39b_glaucoma_v3_-_servicos_de_referencia.pdf">aqui</a>, '\xa0para orientações.']
 ['Pacientes atendidos por outros serviços de saúde:\xa0clique ', <a href="http://saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/medicamentos-para-tratamento-de-glaucoma">aqui</a>, '\xa0para orientações.']
@@ -189,7 +171,7 @@ After that I used a python script to retrieve only the links.
     ],
 ```
 
-Luckily for me, inside every link was the ICDs associated with the respective drug. I extracted the ICDs using the same method already mentioned.https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw
+Luckily for me, inside every link was the ICDs associated with the respective drug. I extracted the ICDs using the method already mentioned.
 
 ## Vinculating drugs with the protocols
 
