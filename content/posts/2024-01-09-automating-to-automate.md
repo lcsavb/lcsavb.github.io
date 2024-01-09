@@ -74,9 +74,7 @@ That way I was able to vinculate the Protocol with the ICDs. As you see it, this
 was able to get the ICD codes because every groups of ICDs in these files was inside parenthesis. I accomplished
 to separete each one because every single one starts with an Uppercase letter followed by 2 numbers.
 But as you see it, I had to fix some things: I have used an open ICD API to normalize the values and corrected
-manually the few wrong which where left.
-
-```python
+manually the few wrong which where left.https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw
 
 import glob
 import os
@@ -93,7 +91,7 @@ for a in arquivos:
     try:
         nome_protocolo = substring.substringByChar(str(a), '_', '.')
         nome_protocolo = nome_protocolo[1:-1]
-        nome_arquivo = os.path.basename(a)
+        nome_arquivo = os.path.basename(a)https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw
     except:
         nome_protocolo = 'nao identificado'
         nome_arquivo = os.path.basename(a)
@@ -163,12 +161,7 @@ After that I used a python script to retrieve only the links.
     ],
 ```
 
-Luckily for me, inside every link was the ICDs associated with the respective drug. I extracted the ICDs using the same method already mentioned.
-
-At that point I know which protocol and which is vinculated with each ICD. But not which drugs are vinculated with each protocol.
-
-But the drugs have diferent presentations and dosages. After getting the [raw data](https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw)/tree/master/medicamentos/csv_raw) I crossed it with a drug API to normalize it.
-
+Luckily for me, inside every link was the ICDs associated with the respective drug. I extracted the ICDs using the same method already mentioned.https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw
 ## Vinculating drugs with the protocols
 
 So, cross-referencing the cids I found in the website with the cids in the pdfs I was able to finally associate all the drugs with the protocols with minimal error.
