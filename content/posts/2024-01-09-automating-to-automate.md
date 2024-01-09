@@ -54,7 +54,7 @@ import os
 
 url_indice = 'http://www.saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/relacao-estadual-de-medicamentos-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-protocolo-clinico-e-diretriz-terapeutica'
 indice = urllib.request.urlopen(url_indice)
-        if endereco[0] != 'h':
+        if endereco[0] != 'h': # that is to assure the link is to a PDF file, not a web address!
             endereco = 'http://saude.sp.gov.br' + endereco
         endereco = str(endereco)
         os.system('wget ' + endereco)
