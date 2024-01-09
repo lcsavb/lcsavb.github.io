@@ -24,17 +24,15 @@ So, I had two choices: either add the data and link manually or...
 
 All the code I used to accomplish this is located in the repository: [Data Retrieval](https://github.com/lcsavb/autocusto-data-retrieval).
 
-It was five years ago and I have learned two important lessons: to never again use bad words* in my code as I have
-done and, MOST IMPORTANTLY, **be organized and write documentation**. The repository is a mess and I don't remember quite well all the steps I followed, but to the best of my ability I'll try to make a summary.
+It's been five years, and I've learned a couple of big lessons: never use bad words* in my code like I did before, and MOST IMPORTANTLY, be organized and write documentation. The repository's a mess, and I don’t quite remember all the steps I took, but I’ll do my best to summarize.
 
-*but you don't need to translate them.... or eat peanut butter either.
+*but you don’t need to translate them… or eat peanut butter either.
 
 ## Data
 
 The data structure is pretty straightforward.
 
-Protocols for specific diseases, yet each protocol has multiples ICDs after all there are different numbers for
-the same disease. For example, for Epilepsy Protocol one can choose G40.0 or G40.1. 
+There are protocols for specific diseases, yet each protocol has multiples ICDs after all many ICDs can represent the same disease. Epilepsy, for example, can have the ICD G40.0 to G40.9.
 
 **The total number of protocols is 92 which are vinculated to about 500 ICD codes.**
 
@@ -135,7 +133,9 @@ was in the website's menus of the Health Secretary, so using a web crawler again
 ['No Estado de São Paulo, o\xa0acesso aos medicamentos para tratamento de glaucoma se dá em:']
 ['\xa0']
 ['Pacientes atendidos em um dos Serviços de Referência em Oftalmologia, habilitados pelo SUS, abaixo relacionados:\xa0clique ', <a href="http://saude.sp.gov.br/resources/ses/perfil/cidadao/acesso-rapido/medicamentos/relacao-estadual-de-medicamentos-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-protocolo-clinico-e-diretriz-terapeutica/39b_glaucoma_v3_-_servicos_de_referencia.pdf">aqui</a>, '\xa0para orientações.']
-['Pacientes atendidos por outros serviços de saúde:\xa0clique ', <a href="http://saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/medicamentos-para-tratamento-de-glaucoma">aqui</a>, '\xa0para orientações.']
+['Pacientes atendidos por outros serviços de saúde:\I accomplished
+to separete each one because every single one starts with an Uppercase letter followed by 2 numbers.
+    if '/resources/' in endereco:xa0clique ', <a href="http://saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/medicamentos-para-tratamento-de-glaucoma">aqui</a>, '\xa0para orientações.']
 ['\xa0']
 ```
 
