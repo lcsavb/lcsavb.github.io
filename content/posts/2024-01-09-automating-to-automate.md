@@ -117,7 +117,7 @@ The JSON file generated was:
         "arquivo": "21_doencadegaucherv11.pdf",
         "cids": [
             "E75.2",
-            "v12.p",'''python
+            "v12.p",
 ```
 
 ## How about the drugs?
