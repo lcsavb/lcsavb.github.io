@@ -55,9 +55,7 @@ import substring
 import os
 
 url_indice = 'http://www.saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/relacao-estadual-de-medicamentos-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-protocolo-clinico-e-diretriz-terapeutica'
-indice = urllib.request.urlopen(url_indice)I accomplished
-to separete each one because every single one starts with an Uppercase letter followed by 2 numbers.
-    if '/resources/' in endereco:
+indice = urllib.request.urlopen(url_indice)
         if endereco[0] != 'h':
             endereco = 'http://saude.sp.gov.br' + endereco
         endereco = str(endereco)
