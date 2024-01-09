@@ -76,7 +76,7 @@ to separete each one because every single one starts with an Uppercase letter fo
 But as you see it, I had to fix some things: I have used an open ICD API to normalize the values and corrected
 manually the few wrong which where left.
 
-'''python
+```python
 
 import glob
 import os
@@ -104,8 +104,6 @@ protocolos_json = json.dumps(protocolos_cids, indent=4, sort_keys=True)
 
 with open('protocolos.json', 'w') as novo_arquivo:
     novo_arquivo.write(protocolos_json)
-
-'''one thing
             "G30.0",
             "G30.1",
             "G30.8",
@@ -132,7 +130,7 @@ with open('protocolos.json', 'w') as novo_arquivo:
         "cids": [
             "E75.2",
             "v12.p",'''python
-'''
+```
 
 ## How about the drugs?
 
@@ -169,7 +167,7 @@ Luckily for me, inside every link was the ICDs associated with the respective dr
 
 At that point I know which protocol and which is vinculated with each ICD. But not which drugs are vinculated with each protocol.
 
-But the drugs have diferent presentations and dosages. After getting the raw data ([https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw](https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw)/tree/master/medicamentos/csv_raw) I crossed it with a drug API to normalize it.
+But the drugs have diferent presentations and dosages. After getting the [raw data](https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw)/tree/master/medicamentos/csv_raw) I crossed it with a drug API to normalize it.
 
 ## Vinculating drugs with the protocols
 
