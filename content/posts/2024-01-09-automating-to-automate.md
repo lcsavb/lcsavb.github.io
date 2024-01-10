@@ -100,7 +100,7 @@ with open('protocolos.json', 'w') as novo_arquivo:
     novo_arquivo.write(protocolos_json)
 ```
 
-The JSON file generated was:
+Here's an excerpt of the generated [JSON file](https://github.com/lcsavb/autocusto-data-retrieval/blob/master/medicamentos/vinculador/protocolos.json):
 
 ```json
     "doencadecrohnv9": {
