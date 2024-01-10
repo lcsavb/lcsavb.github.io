@@ -1,6 +1,6 @@
 ---
 layout: post
-title:  Automating to automate
+title:  Automatically retrieving data
 date: 2024-01-09
 #cover-img: /assets/img/path.jpg
 #thumbnail-img: /assets/img/thumb.png
@@ -10,65 +10,94 @@ author: Lucas Barros
 ---
 
 
-# How did I retrieved and organized the data?
+# The challenges
 
 The SUS (Brazilian Unified Health System) provides a limited number of medications though it's "High Cost Pharmacies" program. Back in 2019 when I started this project, there wasn't a public database or API to the data - and to my knowledge there is not one until this very day.
 
 The data was all spread out in the site of the Health Ministry and in PDFs.
 
-PDFs examples: [here](https://github.com/lcsavb/autocusto-data-retrieval/blob/master/medicamentos/arquivos_base/med_pcdt.pdf) and [here](https://github.com/lcsavb/autocusto/tree/master/static/protocolos). ["Click here"](https://web.archive.org/web/19961017235908/https://www.yahoo.com/) is so 90's, I am guilty.
+So, I had 3 choices:
 
-So, I had two choices: either add the data and link manually or...
+1) Collect everything manually, yet **the total number of protocols is 92 which are vinculated to about 500 ICD codes and 2000 to 3000 drugs.** Not wise.
 
-## Automating to automate
+2) Do not collect any data at all and let the forms free for filling without constraints. But that would beat the purpose of reducing mistakes.
 
-All the code I used to accomplish this is located in the repository: [Data Retrieval](https://github.com/lcsavb/autocusto-data-retrieval).
+or
 
-It's been five years, and I've learned a couple of big lessons: never use bad words* in my code like I did before, and MOST IMPORTANTLY, be organized and write documentation. The repository's a mess, and I don’t quite remember all the steps I took, but I’ll do my best to summarize.
+3) **Let the code do the heavy-lifting**
 
-*but you don’t need to translate them… or eat peanut butter either.
 
 ## Data
 
-The data structure is pretty straightforward.
+The data structure is pretty straightforward:
 
-There are protocols for specific diseases, yet each protocol has multiples ICDs after all many ICDs can represent the same disease. Epilepsy, for example, can have the ICD G40.0 to G40.9.
+1) A Protocol consists of a single disease represented by many ICDs.
 
-**The total number of protocols is 92 which are vinculated to about 500 ICD codes.**
+2) Each Protocol has many drugs associated with it.
 
-For each protocol there are an unique set of conditional documents and a set of authorized drugs. That is it.
+For example:
+- "Epilepsy Protocol": 
+ICDs: G40.0, G40.1, G40.2, G40.3, G40.4, G40.5, G40.6, G40.7, G40.8.
+Drugs: Lamotrigine, Clobazam, Levetiracetam, etc.
 
-I was able to vinculate and organize all the data, with the exception of the conditional documents.
+### Diving into PDFs
 
-### Getting the protocols
+An example for the PDFs for each protocol can be seen [here](https://github.com/lcsavb/autocusto/tree/master/static/protocolos).
 
-The first step was to download the PDFs corresponding to each protocol:
+First I had to download them and the links for every single one were contained in a HTML page:
 
 ```python
 import urllib.request
 from bs4 import BeautifulSoup
-from tika import parser
 import requests
-import substring
 import os
 
-url_indice = 'http://www.saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/relacao-estadual-de-medicamentos-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-protocolo-clinico-e-diretriz-terapeutica'
-indice = urllib.request.urlopen(url_indice)
-        if endereco[0] != 'h': # that is to assure the link is to a PDF file, not a web address!
-            endereco = 'http://saude.sp.gov.br' + endereco
-        endereco = str(endereco)
-        os.system('wget ' + endereco)
+url_with_pdfs = # a long and ugly url lyied here
+
+url = urllib.request.urlopen(url_with_pdfs)
+        ''' links to the pdfs always started with a number and
+        all the other links in that website of an H from https '''
+
+        if link[0] != 'h': 
+            link = 'http://saude.sp.gov.br' + link
+        link = str(link)
+
+        os.system('wget ' + link)
 ```
 
-### Diving into PDFs
+The next step was to write a function which would allow me to extract the ICDs associated with each protocol.
 
-Next I used an PDF crawler to search through the PDFs.
+```python
 
-That way I was able to vinculate the Protocol with the ICDs. As you see it, this is a raw file and I
-was able to get the ICD codes because every groups of ICDs in these files was inside parenthesis. I accomplished
-to separete each one because every single one starts with an Uppercase letter followed by 2 numbers.
-But as you see it, I had to fix some things: I have used an open ICD API to normalize the values and corrected
-manually the few wrong which where left.
+def search_icd(file_content):
+        ''' This function retrieves the ICDs in the pdf file,
+        It does this by iterating over all the contents and 
+        checking if each character is an uppercase letter followed 
+        by two digits. If it is, it takes a slice of five characters 
+        from the string, removes trailing whitespace, 
+        and appends it to the list.
+ 
+            '''
+        possible_icds_list = []
+        character = c
+
+        for c in range(len(file_content)):
+                if file_content[c].isupper() and file_content[c].isalpha():
+                        if file_content[c + 1].isdigit() and file_content[c + 2].isdigit():
+                                possible_icd = (file_content[c:c+5]).rstrip()
+                                possible_icds_list.append(possible_icd)
+        
+        return possible_icds_list
+```
+OK! That worked, but there is a much elegant way to perform the same task using regular expressions.
+
+```python
+import re
+
+possible_icds_list = re.findall(r'[A-Z]{2}\d{2}\.\d', file_content)
+```
+
+Next that function is used with each downloaded file.
 
 ```python
 
@@ -78,51 +107,65 @@ from tika import parser
 import substring
 import json
 
-arquivos = glob.iglob('/home/lucas/dev/chupador/medicamentos/vinculador/protocolos/*.*')
+# Get a list of all files in the specified directory
+directory = # here was an ugly directory path
+files = glob.iglob( string(directory) + '*.*')
 
-protocolos_cids = {}
-for a in arquivos:
-    texto = parser.from_file(a)['content']
-    lista_cids = busca_cid(texto)
+# Initialize an empty dictionary to store the protocols and their ICDs
+protocols_icds = {}
+
+# Loop over each file
+for file in files:
+    # Parse the file content
+    content_from_pdf = parser.from_file(file)['content']
+    # Search for ICDs in the file content
+    icd_list = search_icd(content_from_pdf)
     try:
-        nome_protocolo = substring.substringByChar(str(a), '_', '.')
-        nome_protocolo = nome_protocolo[1:-1]
-        nome_arquivo = os.path.basename(a)
+        # Extract the protocol name from the file name
+        # the output from the file name 20_PROTOCOL_NAME_v9.pdf will be PROTOCOL_NAME
+        protocol_name = substring.substringByChar(str(file), '_', '.')
+        protocol_name = protocol_name[1:-1]
+        # Get the base name of the file
+        file_name = os.path.basename(file)
     except:
-        nome_protocolo = 'nao identificado'
-        nome_arquivo = os.path.basename(a)
+        # If an error occurs, set the protocol name to 'not identified'
+        protocol_name = 'not identified'
+        file_name = os.path.basename(file)
 
-    protocolos_cids.update({nome_protocolo: {'cids': lista_cids, 'arquivo': nome_arquivo}})
+    # Update the dictionary with the protocol name, ICDs, and file name
+    protocols_icds.update({protocol_name: {'icds': icd_list, 'file': file_name}})
 
-protocolos_json = json.dumps(protocolos_cids, indent=4, sort_keys=True)
+# Convert the dictionary to a JSON string
+protocols_json = json.dumps(protocols_icds, indent=4, sort_keys=True)
 
-with open('protocolos.json', 'w') as novo_arquivo:
-    novo_arquivo.write(protocolos_json)
+# Write the JSON string to a new file
+with open('protocols.json', 'w') as new_file:
+    new_file.write(protocols_json)
 ```
+
+That way I was able to vinculate the Protocol with the ICDs. Notice that ICD codes always starts with an uppercase letter followed by 2 numbers.
 
 Here's an excerpt of the generated [JSON file](https://github.com/lcsavb/autocusto-data-retrieval/blob/master/medicamentos/vinculador/protocolos.json):
 
 ```json
     "doencadecrohnv9": {
-        "arquivo": "20_doencadecrohnv9.pdf",
-        "cids": [
+        "file": "20_doencadecrohnv9.pdf",
+        "icds": [
             "K50.0",
             "K50.1",
             "K50.8",
             "v17.p",
             "v17.p"
-        ]'''
-        "arquivo": "21_doencadegaucherv11.pdf",
-        "cids": [
-            "E75.2",
-            "v12.p",
+        ]
 ```
+
+But as you can see, I had to tackle some rough edges: V17.p or v12.p are not ICDs. That happened because in the original version I made a little mistake with the search icd function. Nevertheless, I used an ICD API to normalize the values and manually corrected the few errors that were left.
 
 ## How about the drugs?
 
-Next, I had to know which drug is vinculated with each protocol. I could have done it with the PDFs, yet
-extracting the drug's names from them was too tricky so I used a shortcut. I realized that every single drug
-was in the website's menus of the Health Secretary, so using a web crawler again I got a raw file with all the contents of the website. For example:
+Next, I needed to determine which drug was associated with each protocol. I considered using the PDFs, but extracting the drug names proved too challenging due to the lack of uniformity or pattern in their naming, which a parser could not reliably identify.
+
+So I found a shortcut! I realized that every single drug was listed in the Health Secretary's website menus, so by using a web crawler again, I obtained a raw file with all the contents of the website. For example:
 
 ```
 ['Clique ', <a href="http://saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-a'''ssistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/medicamentos-para-tratamento-de-glaucoma">aqui</a>, ' para orientações']
@@ -139,9 +182,9 @@ to separete each one because every single one starts with an Uppercase letter fo
 ['\xa0']
 ```
 
-After that I used a python script to retrieve only the links.
+After that, I utilized a Python script to filter the links, extract the drug names, associate both and save them into another JSON file.
 
-```html
+```json
 
     "acitretina": [
         "http://www.saude.sp.gov.br/ses/perfil/gestor/assistencia-farmaceutica/medicamentos-dos-componentes-da-assistencia-farmaceutica/links-do-componente-especializado-da-assistencia-farmaceutica/consulta-por-medicamento/acitretina"
@@ -153,20 +196,24 @@ After that I used a python script to retrieve only the links.
 
 Luckily for me, inside every link was the ICDs associated with the respective drug. I extracted the ICDs using the same method already mentioned.
 
-At that point I know which protocol and drug is vinculated with each ICD. But not which drugs are vinculated with each protocol.
+At that point, I knew which protocol and drug were associated with each ICD. By cross-referencing these ICDs (those extracted from the PDFs with those from the website), I was able to finally associate all the drugs with their respective protocols with minimal error.
 
 Moreover the drugs have diferent presentations and dosages. After getting the [raw data](https://github.com/lcsavb/autocusto-data-retrieval/tree/master/medicamentos/csv_raw) I crossed it with a drug API to normalize it.
 
-## Vinculating drugs with the protocols
+## Final thoughts
 
-So, cross-referencing the cids I found in the website with the cids in the pdfs I was able to finally associate all the drugs with the protocols with minimal error.
+Was it the best way? Well, maybe. Nevertheless, it was much faster than doing it all by hand and I learned a lot about Python and the important lesson of being more organized and thorough with documentation!
 
-## The end
+So, in broad strokes, that was what I did to gather the data needed to start my project. Lastly, I wrote some Python code to populate the database and correct the remaining errors in the data. These scripts can be found at: https://github.com/lcsavb/autocusto/tree/master/processos/db.
 
-Was it the best way? Well, I am not really sure. But I know for sure: it was pretty faster than doing t all by hand, I learned a lot of Python and the important lesson to be more organized and thoroughly with the documentation!
+## A piece of advice to my fellow students
 
-So, in broad strokes that was what I did it to get the data to start my project. Lastly I wrote some python
-code to populate the database and correct the remaining mistakes in the data. These scripts can be seen in:
-https://github.com/lcsavb/autocusto/tree/master/processos/db.
+All the code I used to accomplish this is located in the repository: [Data Retrieval](https://github.com/lcsavb/autocusto-data-retrieval). It involved a little more steps than I have just described.
 
-Thank you for reading.
+The repo's is a mess and I will write a follow up post addressing why is that and the lessons I've learned since then. It basically involves lack of documentation and variables's names not only hard to decipher, but in portuguese.
+
+That is a testament to my then naivety. The reasoning was twofold: I never intended to share it with anyone, and I treated the data-collecting as a one-off endeavor: it would only be run once. 
+
+However, I've since realized that this mindset was flawed. As a beginner in programming, it’s essential to cultivate and reinforce good habits from the start. Effective software maintenance and comprehension over the long term demand adherence to best practices. Had I done that, writing this blog post would've been much easier!
+
+Life's journey is unpredictable, often leading us to unexpected destinations, much like where I find myself today.
