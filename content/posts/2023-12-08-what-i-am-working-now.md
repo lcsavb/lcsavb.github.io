@@ -40,7 +40,7 @@ I worked from December 2019 to August 2020 for approximately 3 hours a day, 5 da
 
 I had 400 regular patients. As some of them used more than one drug, that ammounted to 500 prescriptions which had to be repeated every six months. Taking into consideration the previous ammount of error, which ranged in the 20%'s figure, let's consider 600 prescriptions every semester, the time to fill each one of then felt from 20 minutes to 3 minutes.
 
-**Therefore, the ammount of time saved per semester was 150 hours (15 minutes * 600 prescriptions / 60).**
+**Therefore, the ammount of time saved per year was 300 hours (15 minutes * 600 prescriptions * 2 / 60).**
 
 The alpha version was ready in March 2020 and I have used until June 2023. Three and a half years. That saved 1050 hours of my life, a **net gain of 450 hours**.
 
@@ -55,7 +55,7 @@ So, let's also consider the time saved by the patients. Considering 200 wrong pr
 | **Prescriptions per Semester**             | 600 (including 20% error margin)                         |
 | **Time Reduction per Prescription**        | From 20 minutes to 3 minutes                             |
 | **Time Savings per Prescription**          | ~15 minutes                                               |
-| **Time Savings per Semester**              | 150 hours                                                |
+| **Time Savings per Year**              | 300 hours                                                |
 | **Economic Analysis**                      |                                                          |
 | - **Doctor's Hourly Wage in Brazil**         | €40                                                      |
 | - **Annual Savings**            | €12,000 (150 hours x €40 x 2 semesters)                  |
@@ -75,13 +75,13 @@ Out of the 450 net hours saved, I spent most of them caring for patients. I also
 
 Yet my most valuable personal gain was the study I had to undertake! I picked up Python, Django, and Docker, gained familiarity with JavaScript for front end develpment, along with HTML. Additionally, I delved into courses like [CS50](https://www.youtube.com/channel/UCcabW7890RKJzL968QWEykA), [Introduction to Computer Science with Python - OCW](https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/) and a couple more. [Lucas Ricciardi](https://github.com/LucasRicciardi), an accomplished developer and teacher, deserves special acknowledgment, as he taught me the fundamentals of Python and pointed me where to follow afterwards. 
 
-Ultimately, I discovered that coding is just one aspect; deploying and commercializing software presents an entirely different challenge – a truly important lesson. I have not deployed yet. Currently there is a similar software called [LME FÁCIL](http://lmefacil.com.br) (accessible only through a VPN - the ip has to be in Brazil) which has about 70.000 registered patients and works pretty well.
+Ultimately, I discovered that coding is just one aspect; deploying and commercializing software presents an entirely different challenge – a truly important lesson. I have not deployed yet. Currently there is a similar software called [LME FÁCIL](http://lmefacil.com.br) (accessible only through a VPN - the ip has to be in Brazil) which has about 70.000 registered patients and works well. I will explore its caveats to make my version even better.
 
 The depth and impact of this learning journey are immeasurable in mere numbers, as it has profoundly changed the trajectory of my life - that is why I am here now at the Deggendorf Institute of Technology.
 
 ## The future
 
-I am rewriting AutoCusto from scratch, correcting all the beginner's mistakes. My current plan, which is subject to change, is to make it available as open source and offer consulting services to any company or governmental branch interested in using it. From my perspective, the ideal application would be to have an administrative worker handle the prescriptions, with the doctor only needing to review and approve them afterwards.
+I am rewriting AutoCusto from scratch, correcting all the beginner's mistakes. My current plan, which is subject to change, is to make it available as open source and offer consulting services to any company or governmental branch interested in using it. From my perspective, the ideal application would be to have an administrative worker handle the prescriptions, with the doctor only needing to review and sign them afterwards.
 
 Recently, the Brazilian Health Ministry approved the acceptance of prescriptions with a cryptographic signature. This is an absolute must-have feature that I will incorporate. Since the pandemic, the use of cryptographically signed prescriptions has become widespread in Brazil.
 

@@ -18,13 +18,13 @@ The data was all spread out in the site of the Health Ministry and in PDFs.
 
 So, I had 3 choices:
 
-1) Collect everything manually, yet **the total number of protocols is 92 which are vinculated to about 500 ICD codes and 2000 to 3000 drugs.** Not wise.
+1) Collect everything manually, yet **the total number of protocols is 92 which are vinculated to about 500 ICD codes and 400 to 700 drugs.** Not wise.
 
 2) Do not collect any data at all and let the forms free for filling without constraints. But that would beat the purpose of reducing mistakes.
 
 or
 
-3) **Let the code do the heavy-lifting**
+3) **Let the code do the heavy-lifting** - which actually became an automation in itself - a mini-project inside my project.
 
 
 ## Data
@@ -202,7 +202,9 @@ Moreover the drugs have diferent presentations and dosages. After getting the [r
 
 ## Final thoughts
 
-Was it the best way? Well, maybe. Nevertheless, it was much faster than doing it all by hand and I learned a lot about Python and the important lesson of being more organized and thorough with documentation!
+It was much faster - and certainly less boring - than doing it all by hand and I learned a lot about Python and the important lesson of being more organized and thorough with documentation!
+
+It took me about 10 hours to code everything. Had I done it manually, considering 10 minutes per medication and 500 different drugs, it would have taken me 80 hours. A net savings of approximately 70 hours.
 
 So, in broad strokes, that was what I did to gather the data needed to start my project. Lastly, I wrote some Python code to populate the database and correct the remaining errors in the data. These scripts can be found at: https://github.com/lcsavb/autocusto/tree/master/processos/db.
 
@@ -210,7 +212,7 @@ So, in broad strokes, that was what I did to gather the data needed to start my 
 
 All the code I used to accomplish this is located in the repository: [Data Retrieval](https://github.com/lcsavb/autocusto-data-retrieval). It involved a little more steps than I have just described.
 
-The repo's is a mess and I will write a follow up post addressing why is that and the lessons I've learned since then. It basically involves lack of documentation and variables's names not only hard to decipher, but in portuguese.
+The repo's is messy: it basically involves lack of documentation and variables's names not only hard to decipher, but in portuguese.
 
 That is a testament to my then naivety. The reasoning was twofold: I never intended to share it with anyone, and I treated the data-collecting as a one-off endeavor: it would only be run once. 
 

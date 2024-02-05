@@ -11,6 +11,8 @@ author: Lucas Barros
 
 Hello, everyone! Today, I want to talk about a technical aspect of my project and the evolution of my code.
 
+# From lame, through loop to dictionary comprehension
+
 The goal: to create a Django form responsible for making a new prescription.
 
 And the problem is fairly simple: each prescription may have up to 4 drugs and each drug may have a different quantity and posology for each of 6 months.
@@ -29,7 +31,7 @@ class CreatePrescription(forms.Form):
 
 ```
 
-## The lazy approach
+### The lazy approach
 
 Initially, I used a manual approach, defining each field explicitly. This method was amateurish and did not adhere to the "DRY" (Don't Repeat Yourself) principle.
 
@@ -88,7 +90,7 @@ class CreatePrescription(forms.Form):
     qtd_med4_mes6 = forms.CharField(required=False, label="Qtde. 6 mês")
 ```
 
-## super()
+### super()
 
 The problem takes form: it is needed to add the fields *dinamically*, the class __init__ method has to be overriden with super():
 
@@ -108,7 +110,7 @@ class CreatePrescription(forms.Form):
 
 The following approaches are then included in this new __init__ method.
 
-## Approach 2: Loop-Based Creation
+### Approach 2: Loop-Based Creation
 
 To improve, I moved to a loop-based approach, which made the code more dynamic and reduced repetition.
 
@@ -137,7 +139,7 @@ class CreatePrescription(forms.Form):
 
 Certainly better, but not good enough.
 
-## Approach 3: The zen of Python
+### Approach 3: The zen of Python
 
 ```python
 
@@ -182,10 +184,9 @@ In this case, the dictionary being added has keys in the format drug_{d} and val
 
 This is a common pattern in Django when you need to add fields to a form dynamically based on some variable data. In this case, the form fields are being created based on the drugs iterable.
 
-*And it is important to highlight again: the __init__ class has to be overriden with super()!* Why? Hum... that is a topic for another post.
-
-## Conclusion
-
 Comparing these three approaches, the list comprehension with `update` method stands out as the best. It’s not only more efficient and easier to maintain, but also scales well with future changes and additions. This method is ideal for regular, dynamic data structures like the example of form fields for medicines and posology.
+
+
+
 
 ---
