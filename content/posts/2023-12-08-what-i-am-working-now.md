@@ -10,27 +10,23 @@ author: Lucas
 ---
 
 
-Hello, everyone! Today, I want to share with you a project I've been working on for some time, which is very close to my heart - AutoCusto. This project is a solution I developed to tackle a critical challenge in Brazil's public healthcare system.
-
-## Background
-
-In Brazil, we have a universal health system called the Unified Health System (SUS), serving over 190 million people. One of the services the SUS offers are the "High-Cost Pharmacies," which provide specialized medications for chronic diseases. Even with the current minimum wage of R$ 1,320, the costs of these medications can be prohibitive, consuming more than 15% of a person's monthly income.
-
-## Bureaucratic Challenges
-
-The distribution of these medications is accompanied by significant bureaucracy. Doctors must fill out numerous paper forms (**ranging from 7 to 15 sheets**), and any minor error can lead to the refusal of the medication, causing great inconvenience to patients.
+Hello, everyone! Today, I want to share with you a project I've been working on for some time, which is very close to my heart - AutoCusto. This project is a solution I developed to tackle the papework needed for the High Cost Pharmacies (Farmácias de Alto Custo).
 
 ## My first attempt to solve it
 
-The first time I tackled this issue was in late 2018. Since I primarily had to fill prescriptions for 5 or 6 diseases, I manually compiled all the forms specific to each prescription into a single PDF file. This allowed me to print them with just one click. I assigned the same label to all repetitive fields, allowing me to enter each piece of repetitive information just once. For instance, the patient's name needed to be included on every sheet. By labeling each name field as "PATIENT NAME" I ensured that entering the name on the first sheet automatically filled it in on all subsequent sheets.
+The first time I tackled this issue was in late 2018. Since I primarily had to fill prescriptions for 5 or 6 diseases and I had no clue how to code whatsoever, I manually compiled all the forms specific to each prescription into a single PDF file. To accomplish that I bought the pro version of Adobe Acrobat.
+
+This allowed me to print them with just one click. I assigned the same label to all repetitive fields, allowing me to enter each piece of repetitive information just once. For instance, the patient's name needed to be included on every sheet. By labeling each name field as "PATIENT NAME" I ensured that entering the name on the first sheet automatically filled it in on all subsequent sheets.
 
 For each patient, I created a new file from the model, saved it, and simply updated the date whenever I needed to renew the prescription.
 
-However, this approach became obsolete about 6 months later because the government changed the standard format of the forms. 
+However, about 6 months later because the government changed the standard format of the forms. So hundreds of saved templates and the time I invested in building them were rendered worthless.
 
 ## My Solution: AutoCusto
 
 It was in this context that AutoCusto was born. The name is a play on words in Portuguese, combining "Alto" (High cost) with "Auto" (Automatic). The goal of AutoCusto is to minimize errors, rework, and inconvenience for patients. The primary focus of a doctor should be patient care, not navigating unnecessary bureaucracy. The very first version was a CLI (Command Line Interface) program, but soon I evolved it into a fully-fledged web app written in Python.
+
+The alpha version served its purpose for my personal use, although it was unsuitable for production due to issues that I will address in subsequent posts.
 
 ## Cost-benefit analysis
 
@@ -75,7 +71,7 @@ Out of the 450 net hours saved, I spent most of them caring for patients. I also
 
 Yet my most valuable personal gain was the study I had to undertake! I picked up Python, Django, and Docker, gained familiarity with JavaScript for front end develpment, along with HTML. Additionally, I delved into courses like [CS50](https://www.youtube.com/channel/UCcabW7890RKJzL968QWEykA), [Introduction to Computer Science with Python - OCW](https://ocw.mit.edu/courses/6-0001-introduction-to-computer-science-and-programming-in-python-fall-2016/) and a couple more. [Lucas Ricciardi](https://github.com/LucasRicciardi), an accomplished developer and teacher, deserves special acknowledgment, as he taught me the fundamentals of Python and pointed me where to follow afterwards. 
 
-Ultimately, I discovered that coding is just one aspect; deploying and commercializing software presents an entirely different challenge – a truly important lesson. I have not deployed yet. Currently there is a similar software called [LME FÁCIL](http://lmefacil.com.br) (accessible only through a VPN - the ip has to be in Brazil) which has about 70.000 registered patients and works well. I will explore its caveats to make my version even better.
+Ultimately, I discovered that coding is just one aspect; deploying and commercializing software presents an entirely different challenge – a truly important lesson. I have not deployed yet. Currently there is a similar software called [LME FÁCIL](http://lmefacil.com.br) (accessible only through a VPN - the ip has to be in Brazil) which has about 70.000 registered patients and works well. I will explore its caveats to make AutoCusto even better.
 
 The depth and impact of this learning journey are immeasurable in mere numbers, as it has profoundly changed the trajectory of my life - that is why I am here now at the Deggendorf Institute of Technology.
 
