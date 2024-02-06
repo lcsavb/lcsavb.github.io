@@ -71,7 +71,7 @@ Just imagine:
 
 "Explain further".
 
-"Use the Ottawa Subarachnoid Hemorrhage Rule (>40 years, complaint of neck pain or stiffness, witnessed loss of consciousness, onset with exertion, thunderclap headache, and limited neck flexion on examination) as a decision rule that has high sensitivity to rule out subarachnoid hemorrhage, but low specificity to rule in subarachnoid hemorrhage, for patients presenting to the emergency department with a normal neurologic examination result and peak headache severity within 1 hour of onset of pain symptoms.  
+"Use the Ottawa Subarachnoid Hemorrhage Rule (>40 years), complaint of neck pain or stiffness, witnessed loss of consciousness, onset with exertion, thunderclap headache, and limited neck flexion on examination) as a decision rule that has high sensitivity to rule out subarachnoid hemorrhage, but low specificity to rule in subarachnoid hemorrhage, for patients presenting to the emergency department with a normal neurologic examination result and peak headache severity within 1 hour of onset of pain symptoms.  
 
 Although the presence of neck pain and stiffness on physical examination in emergency department patients with an acute headache is strongly associated with subarachnoid hemorrhage, do not use a single physical sign and/or symptom to rule out subarachnoid hemorrhage."
 
