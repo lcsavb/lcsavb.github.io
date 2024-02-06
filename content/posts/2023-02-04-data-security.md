@@ -37,6 +37,50 @@ While functional, the initial code posed several security and privacy concerns:
 1. **Exposure of Sensitive Data**: Considering the ManyToMany relationship between users and patients, the initial code did not restrict access based on this relationship, allowing users to access data for patients they are not associated with.
 2. **Lack of Authentication and Authorization**: There was no mechanism in place to ensure that only authenticated and authorized users could access the data.
 
+## Using a global variable in Django to solve the problem 
+
+The first approach would be to create a global variable ```associated_patients```  in the settings.py file and use the following code: 
+
+```python
+
+from django.http import JsonResponse
+from django.db.models import Q
+from django.contrib.auth.decorators import login_required
+from settings import associated_patients
+
+@login_required
+def search_patients(request):
+    keyword = request.GET.get('keyword', '').strip()
+    if not keyword:
+        return JsonResponse({'error': 'Keyword not provided'}, status=400)
+
+    # Fetch associated patients from the global variable
+    user_id = request.user.id
+    if user_id in associated_patients:
+        associated_patients_for_user = associated_patients[user_id]
+    else:
+        associated_patients_for_user = []
+
+    # Filter the associated patients by name or CPF based on the keyword
+    filtered_patients = filter(
+        lambda patient: keyword.lower() in patient['patient_name'].lower() or
+                        keyword.lower() in patient['patient_cpf'].lower(),
+        associated_patients_for_user
+    )
+
+    patients_list = list(filtered_patients)
+
+    return JsonResponse(patients_list, safe=False)
+
+```
+
+However, there are some downsides: 
+
+- Global variables are not thread-safe, so if your Django application runs in a multi-threaded environment (which it typically does), concurrent modifications to the global variable can lead to race conditions and unpredictable behavior.
+- Storing large amounts of data in a global variable can impact memory usage and performance.
+- Global variables should be used sparingly and with caution, especially in web applications where concurrent access is common.
+
+
 ### Enhanced Version
 
 To address these concerns, the code was refactored with the following enhancements:
@@ -70,6 +114,7 @@ def search_patients(request):
 
 1. **Authentication**: The `@login_required` decorator was added to ensure that only authenticated users could access the patient search functionality.
 2. **Authorization**: The revised code assumes a many-to-many relationship between users and patients, ensuring users can only access data for patients they are associated with.
+
 
 ### One last thing
 
